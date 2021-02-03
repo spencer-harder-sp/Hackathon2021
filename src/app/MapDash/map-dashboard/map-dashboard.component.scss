@@ -1,0 +1,43 @@
+#map {
+  height: 50vh;
+  width: 100%;
+  flex-grow: 1;
+}
+
+.dash-header {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0 64px;
+}
+
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  padding: 64px;
+}
+
+.map-and-violations {
+  width: 75%;
+}
+
+.dashboard-violation-grid {
+  flex-grow: 1;
+  width: 100%;
+  padding: 16px;
+  margin: 32px 0;
+  border-collapse: collapse;
+
+  tr {
+    border: solid #dfe3e7;
+    border-width: 1px 1px;
+  }
+
+  th {
+    padding: 4px;
+    border: solid #dfe3e7;
+    border-width: 1px 1px;
+    font-weight: lighter;
+
+  }
+}

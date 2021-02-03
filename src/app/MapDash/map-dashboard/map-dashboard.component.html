@@ -1,0 +1,26 @@
+<header class="dash-header">
+    <h1>Identity Map Dashboard</h1>
+    <p>User: John Doe</p>
+</header>
+<main class="dashboard-container">
+    <div class="map-and-violations">
+        <div id="map"></div>
+        <table class="dashboard-violation-grid ">
+            <tr>
+                <th><strong>Device</strong></th>
+                <th><strong>Violation Type</strong></th>
+                <th><strong>Occurance Time</strong></th>
+                <th><strong>Action</strong></th>
+            </tr>
+            <tr *ngFor="let violation of violationList">
+                <th>{{violation.device}}</th>
+                <th>{{violation.violationType}}</th>
+                <th>{{violation.timeOfOccurance}}</th>
+                <th></th>
+            </tr>
+        </table>
+    </div>
+    <div>
+
+    </div>
+</main>
