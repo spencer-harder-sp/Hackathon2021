@@ -7,6 +7,9 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
+import {
+  FeatureCollection
+} from 'geojson/index';
 
 @Component({
   selector: 'app-map-dashboard',
@@ -22,55 +25,89 @@ export class MapDashboardComponent implements OnInit {
 
   public violationList = [
     {
-      device: 'Johns Laptop',
-      violationType: 'Out of parity',
-      timeOfOccurance: '11:30pm'
+      device: 'iPhone',
+      violationType: 'Unkown Location',
+      timeOfOccurance: 'August 1st, 2020, 11:35am EST'
+    },
+    {
+      device: 'Laptop',
+      violationType: 'Out of Compliance',
+      timeOfOccurance: 'June 28th, 2020, 11:30pm EST'
     }
   ];
 
-  public geoFences = [
-    {
-      name: 'home',
-      coordinates: [
-        [-97.888112, 30.381129],
-        [ -97.887901,30.381014],
-        [-97.888051, 30.380822],
-        [-97.888247, 30.380928]
-      ]
+
+  public devices: FeatureCollection = {
+    type: "FeatureCollection",
+    features: [{
+      type: 'Feature',
+      properties: {
+        description: "Laptop",
+        icon: 'marker'
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: [
+          -97.848339, 30.405442
+        ]
+      }
     },
     {
-      name: 'slpthq',
-      coordinates: [
-        [
-          -97.84908771514893,
-          30.405905471946284
-        ],
-        [
-          -97.84953832626343,
-          30.405484450068865
-        ],
-        [
-          -97.84768223762512,
-          30.40454061420837
-        ],
-        [
-          -97.84758567810059,
-          30.404771947371163
-        ],
-        [
-          -97.8472638130188,
-          30.405456690320833
-        ],
-        [
-          -97.8483098745346,
-          30.40591935175748
-        ],
-        [
-          -97.84908771514893,
-          30.405905471946284
-        ]
-      ]
+      type: 'Feature',
+      properties: {
+        description: 'iPhone',
+        icon: 'marker'
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: [-97.851928, 30.405377]
+      }
     }
+    ]
+  };
+
+  public geoFences = [{
+    name: 'home',
+    coordinates: [
+      [-97.850580, 30.406246],
+      [-97.850323, 30.406713],
+      [-97.850127, 30.406595],
+      [-97.850363, 30.406172]
+    ]
+  },
+  {
+    name: 'slpthq',
+    coordinates: [
+      [
+        -97.84908771514893,
+        30.405905471946284
+      ],
+      [
+        -97.84953832626343,
+        30.405484450068865
+      ],
+      [
+        -97.84768223762512,
+        30.40454061420837
+      ],
+      [
+        -97.84758567810059,
+        30.404771947371163
+      ],
+      [
+        -97.8472638130188,
+        30.405456690320833
+      ],
+      [
+        -97.8483098745346,
+        30.40591935175748
+      ],
+      [
+        -97.84908771514893,
+        30.405905471946284
+      ]
+    ]
+  }
   ];
 
   public style = 'mapbox://styles/mapbox/streets-v11';
@@ -95,6 +132,22 @@ export class MapDashboardComponent implements OnInit {
 
     this.map.on('load', () => {
       this.loadGeofences();
+      this.map.addSource('devices', {
+        'type': 'geojson',
+        'data': this.devices
+      });
+      this.map.addLayer({
+        'id': 'poi-labels',
+        'type': 'symbol',
+        'source': 'devices',
+        'layout': {
+          'text-field': ['get', 'description'],
+          'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+          'text-radial-offset': 0.5,
+          'text-justify': 'left',
+          'icon-image': ['concat', ['get', 'icon'], '-15']
+        }
+      });
     });
   }
 
